@@ -1,0 +1,45 @@
+
+name: train-model
+
+on: [pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: Install dependencies
+#    - name: Get python version
+      run: pip install -r requirements.txt
+#      run: python -V
+    - name: Preprocces
+      run: python preprocces.py
+    - name: Predict model
+      run: python predict.py
+    - name: Train DecisionTree
+      run: python train_decisiontree.py
+    - name: Train KNN
+      run: python train_knn.py
+    - name: Train RandomForest
+      run: python train_randomforest.py
+    - name: Train SVM
+      run: python train_svm.py
+    - name: Deer Learning
+      run: python deep_class.py
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: random_forest_classifier.pkl
+        path: Pickles/random_forest_classifier.pkl
+        name: KN.pkl
+        path: Pickles/KN.pkl
+        name: classifier_decision_tree.pkl
+        path: Pickles/classifier_decision_tree.pkl
+        name: svm.pkl
+        path: Pickles/svm.pkl
